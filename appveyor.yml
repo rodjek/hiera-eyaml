@@ -26,4 +26,4 @@ before_test:
   - bundle -v
 
 test_script:
-  - bundle exec cucumber -f progress
+  - bundle exec cucumber
