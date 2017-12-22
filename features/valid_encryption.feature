@@ -1,12 +1,13 @@
 Feature: eyaml encrypting is valid
 
   Scenario: encrypt and decrypt a binary file
-    When I run `bash -c "eyaml encrypt -o string -f test_input.bin > test_output.txt"`
-    When I run `bash -c "eyaml decrypt -f test_output.txt > test_output.bin"`
-    When I run `file test_output.bin`
-    Then the output should match /PNG image data/
+    Given I use a fixture named "sandbox"
+    When I run `eyaml encrypt -o string -f test_input.bin` and redirect stdout to the file "test_output.txt"
+    And I run `eyaml decrypt -f test_output.txt` and redirect stdout to the file "test_output.bin"
+    Then the file "test_output.bin" should contain a PNG image
 
   Scenario: encrypt and decrypt a simple file
-    When I run `bash -c "eyaml encrypt -o string -f test_input.txt > test_output.txt"`
-    When I run `eyaml decrypt -f test_output.txt`
+    Given I use a fixture named "sandbox"
+    When I run `eyaml encrypt -o string -f test_input.txt` and redirect stdout to the file "test_output.txt"
+    And I run `eyaml decrypt -f test_output.txt`
     Then the output should match /fox jumped over/

@@ -5,18 +5,22 @@ Feature: eyaml decrypting
   I want to use the eyaml tool to decrypt data in various ways
 
   Scenario: decrypt a simple string
+    Given I use a fixture named "sandbox"
     When I run `eyaml decrypt -s 'ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQAwDQYJKoZIhvcNAQEBBQAEggEAJsIbL+DE4b5mbT4ozzsGximhweXkJakBXRNqi/TOBV5RnMjlAhik2NQGyZdrg4fmQynyQvI7lKPos5bmqT6Ltk0XxfL0l1x8MIdVLDu7JG72a+5bbU7EK/PlhwaeJ0QpnA0M34koNykSmcvdVUoIDag71lqw4Hmk8JQuXmo95gP0sXHvlahgxR522Z8MTEitfimtZPnHJVMjQEnBHIwXLkEfqUHH3RciED3AkeU+En63Ou7Nq1SqoC4ln0oL1L2gRqsyEKWF/cigcZfAggh9rva6wlthh+Fj7yJy7ALVG/AXwrF1sJfTR31+RMbzPbgOHXES8P4yQvQnx6LNUSKAgDBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCSuNScp5k8F0RKt63fkoPrgCBYbnl44Wdv5mtaJmJcc0WIUcLTpixl1IY2uQ7IiI358w==]'`
     Then the output should match /^one flew over the cuckoos nest$/
 
   Scenario: decrypt a default encryption string
+    Given I use a fixture named "sandbox"
     When I run `eyaml decrypt -s 'ENC[MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQAwDQYJKoZIhvcNAQEBBQAEggEAJsIbL+DE4b5mbT4ozzsGximhweXkJakBXRNqi/TOBV5RnMjlAhik2NQGyZdrg4fmQynyQvI7lKPos5bmqT6Ltk0XxfL0l1x8MIdVLDu7JG72a+5bbU7EK/PlhwaeJ0QpnA0M34koNykSmcvdVUoIDag71lqw4Hmk8JQuXmo95gP0sXHvlahgxR522Z8MTEitfimtZPnHJVMjQEnBHIwXLkEfqUHH3RciED3AkeU+En63Ou7Nq1SqoC4ln0oL1L2gRqsyEKWF/cigcZfAggh9rva6wlthh+Fj7yJy7ALVG/AXwrF1sJfTR31+RMbzPbgOHXES8P4yQvQnx6LNUSKAgDBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCSuNScp5k8F0RKt63fkoPrgCBYbnl44Wdv5mtaJmJcc0WIUcLTpixl1IY2uQ7IiI358w==]'`
     Then the output should match /^one flew over the cuckoos nest$/
 
   Scenario: decrypt an encrypted file
+    Given I use a fixture named "sandbox"
     When I run `eyaml decrypt -f test_input.encrypted.txt`
     Then the output should match /^danger will robinson$/
 
   Scenario: decrypt an eyaml file
+    Given I use a fixture named "sandbox"
     When I run `eyaml decrypt -e test_input.yaml`
     Then the output should match /encrypted_string: DEC::PKCS7\[planet of the apes\]\!/
     And the output should match /encrypted_block: >\n\s+DEC::PKCS7\[gangs of new york\]\!/
@@ -38,8 +42,8 @@ Feature: eyaml decrypting
     And the output should match /\s+key6: DEC::PKCS7\[value6\]\!/
 
   Scenario: decrypt using STDIN
-    When I run `./pipe_string.sh ENC[MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQAwDQYJKoZIhvcNAQEBBQAEggEAJsIbL+DE4b5mbT4ozzsGximhweXkJakBXRNqi/TOBV5RnMjlAhik2NQGyZdrg4fmQynyQvI7lKPos5bmqT6Ltk0XxfL0l1x8MIdVLDu7JG72a+5bbU7EK/PlhwaeJ0QpnA0M34koNykSmcvdVUoIDag71lqw4Hmk8JQuXmo95gP0sXHvlahgxR522Z8MTEitfimtZPnHJVMjQEnBHIwXLkEfqUHH3RciED3AkeU+En63Ou7Nq1SqoC4ln0oL1L2gRqsyEKWF/cigcZfAggh9rva6wlthh+Fj7yJy7ALVG/AXwrF1sJfTR31+RMbzPbgOHXES8P4yQvQnx6LNUSKAgDBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCSuNScp5k8F0RKt63fkoPrgCBYbnl44Wdv5mtaJmJcc0WIUcLTpixl1IY2uQ7IiI358w==] eyaml decrypt --stdin`
+    Given I use a fixture named "sandbox"
+    When I run `eyaml decrypt --stdin` interactively
+    And I type "ENC[MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQAwDQYJKoZIhvcNAQEBBQAEggEAJsIbL+DE4b5mbT4ozzsGximhweXkJakBXRNqi/TOBV5RnMjlAhik2NQGyZdrg4fmQynyQvI7lKPos5bmqT6Ltk0XxfL0l1x8MIdVLDu7JG72a+5bbU7EK/PlhwaeJ0QpnA0M34koNykSmcvdVUoIDag71lqw4Hmk8JQuXmo95gP0sXHvlahgxR522Z8MTEitfimtZPnHJVMjQEnBHIwXLkEfqUHH3RciED3AkeU+En63Ou7Nq1SqoC4ln0oL1L2gRqsyEKWF/cigcZfAggh9rva6wlthh+Fj7yJy7ALVG/AXwrF1sJfTR31+RMbzPbgOHXES8P4yQvQnx6LNUSKAgDBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCSuNScp5k8F0RKt63fkoPrgCBYbnl44Wdv5mtaJmJcc0WIUcLTpixl1IY2uQ7IiI358w==]"
+    And I close the stdin stream
     Then the output should match /^one flew over the cuckoos nest$/
-
-
-

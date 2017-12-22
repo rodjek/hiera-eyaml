@@ -5,36 +5,30 @@ Feature: eyaml hiera integration
   I want to verify that hiera-eyaml works within puppet and hiera
 
   Scenario: verify puppet with hiera can use hiera-eyaml to decrypt data
-    When I run `rm -f /tmp/eyaml_puppettest.* 2>/dev/null`
+    Given I use a fixture named "sandbox"
     When I run `puppet apply --disable_warnings deprecations --confdir ./puppet --node_name_value localhost puppet/manifests/init.pp`
-    Then the output should contain "/tmp/eyaml_puppettest"
-    Then the file "/tmp/eyaml_puppettest.1" should match /^good night$/
-    Then the file "/tmp/eyaml_puppettest.2" should match /^and good luck$/
-    Then the file "/tmp/eyaml_puppettest.3" should match /^and good luck$/
-    Then the file "/tmp/eyaml_puppettest.4" should match /^and good luck$/
-    Then the file "/tmp/eyaml_puppettest.5" should match /^gangs of new york$/
-
+    Then the output should contain "eyaml_puppettest.1: 'good night'"
+    And the output should contain "eyaml_puppettest.2: 'and good luck'"
+    And the output should contain "eyaml_puppettest.3: 'and good luck'"
+    And the output should contain "eyaml_puppettest.4: 'and good luck'"
+    And the output should contain "eyaml_puppettest.5: 'gangs of new york'"
 
   Scenario: verify puppet and facter for correct hash merge with incorrect fact
-    Given I set FACTER_fact to "not-existcity"
-    When I run `rm -f /tmp/eyaml_puppettest.* 2>/dev/null`
+    Given I use a fixture named "sandbox"
+    And I set the environment variable "FACTER_fact" to "not-existcity"
     When I run `puppet apply --disable_warnings deprecations --confdir ./puppet-hiera-merge --node_name_value localhost puppet-hiera-merge/manifests/init.pp`
-    Then the output should contain "/tmp/eyaml_puppettest"
-    Then the file "/tmp/eyaml_puppettest.1" should match /^good night$/
-    Then the file "/tmp/eyaml_puppettest.2" should match /^great to see you$/
-    Then the file "/tmp/eyaml_puppettest.3" should match /good luck/
-    Then the file "/tmp/eyaml_puppettest.4" should match /"here": "we go again!"/
-    Then the file "/tmp/eyaml_puppettest.5" should match /^gangs of new york\nis to the warriors$/
+    Then the output should contain "eyaml_puppettest.1: 'good night'"
+    And the output should contain "eyaml_puppettest.2: 'great to see you'"
+    And the output should match /eyaml_puppettest.3: '\[\s+"good luck"\s+\]'/
+    And the output should match /eyaml_puppettest.4: '{\s+"here": "we go again!"\s+}'/
+    And the output should contain "eyaml_puppettest.5: 'gangs of new york\nis to the warriors'"
 
   Scenario: verify puppet and facter for correct hash merge
-    Given I set FACTER_fact to "city"
-    When I run `rm -f /tmp/eyaml_puppettest.* 2>/dev/null`
+    Given I use a fixture named "sandbox"
+    And I set the environment variable "FACTER_fact" to "city"
     When I run `puppet apply --disable_warnings deprecations --confdir ./puppet-hiera-merge --node_name_value localhost puppet-hiera-merge/manifests/init.pp`
-    Then the output should contain "/tmp/eyaml_puppettest"
-    Then the file "/tmp/eyaml_puppettest.1" should match /^rise and shine$/
-    Then the file "/tmp/eyaml_puppettest.2" should match /^break a leg$/
-    Then the file "/tmp/eyaml_puppettest.3" should match /it'll be alright on the night/
-    Then the file "/tmp/eyaml_puppettest.4" should match /"here": "be rabbits"/
-    Then the file "/tmp/eyaml_puppettest.4" should match /"see": "no evil"/
-    Then the file "/tmp/eyaml_puppettest.5" should match /^source code\nis to donny darko$/
-
+    Then the output should contain "eyaml_puppettest.1: 'rise and shine'"
+    And the output should contain "eyaml_puppettest.2: 'break a leg'"
+    And the output should match /eyaml_puppettest.3: '\[\s+"good luck",\s+"it'll be alright on the night!"\s+\]'/
+    And the output should match /eyaml_puppettest.4: '{\s+"here": "be rabbits",\s+"see": "no evil"\s+}'/
+    And the output should contain "eyaml_puppettest.5: 'source code\nis to donny darko'"
