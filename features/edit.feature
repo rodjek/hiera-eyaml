@@ -6,27 +6,27 @@ Feature: eyaml editing
 
   Scenario: decrypt an eyaml file
     Given I use a fixture named "sandbox"
-    And I set the environment variable "EDITOR" to "/bin/cat"
+    And I set the environment variable "EDITOR" to "cat"
     And I copy the file named "test_input.yaml" to "test_input.eyaml"
     When I run `eyaml edit test_input.eyaml`
     Then the output should match /encrypted_string: DEC\(\d+\)::PKCS7\[planet of the apes\]\!/
     And the output should match /encrypted_default_encryption_string: DEC\(\d+\)::PKCS7\[planet of the apes\]\!/
-    And the output should match /encrypted_block: >\n\s+DEC\(\d+\)::PKCS7\[gangs of new york\]\!/
-    And the output should match /encrypted_tabbed_block: >\n\s+DEC\(\d+\)::PKCS7\[gangs of new york\]\!/
-    And the output should match /encrypted_default_encryption_block: >\n\s+DEC\(\d\)::PKCS7\[gangs of new york\]\!/
+    And the output should match /encrypted_block: >\r?\n\s+DEC\(\d+\)::PKCS7\[gangs of new york\]\!/
+    And the output should match /encrypted_tabbed_block: >\r?\n\s+DEC\(\d+\)::PKCS7\[gangs of new york\]\!/
+    And the output should match /encrypted_default_encryption_block: >\r?\n\s+DEC\(\d\)::PKCS7\[gangs of new york\]\!/
     And the output should match /\- DEC\(\d+\)::PKCS7\[apocalypse now\]\!/
     And the output should match /\- DEC\(\d+\)::PKCS7\[the count of monte cristo\]\!/
     And the output should match /\- array4/
     And the output should match /\- DEC\(\d+\)::PKCS7\[dr strangelove\]\!/
     And the output should match /\- array5/
-    And the output should match /\- >\n\s+DEC\(\d+\)::PKCS7\[kramer vs kramer\]\!/
-    And the output should match /\- >\n\s+DEC\(\d+\)::PKCS7\[the manchurian candidate\]\!/
-    And the output should match /\- >\n\s+tomorrow and tomorrow and\s*\n\s+tomorrow creeps/
-    And the output should match /\- >\n\s+DEC\(\d+\)::PKCS7\[much ado about nothing\]\!/
-    And the output should match /\- >\n\s+when shall we three meet again\n\s+in thunder/
+    And the output should match /\- >\r?\n\s+DEC\(\d+\)::PKCS7\[kramer vs kramer\]\!/
+    And the output should match /\- >\r?\n\s+DEC\(\d+\)::PKCS7\[the manchurian candidate\]\!/
+    And the output should match /\- >\r?\n\s+tomorrow and tomorrow and\s*\r?\n\s+tomorrow creeps/
+    And the output should match /\- >\r?\n\s+DEC\(\d+\)::PKCS7\[much ado about nothing\]\!/
+    And the output should match /\- >\r?\n\s+when shall we three meet again\r?\n\s+in thunder/
     And the output should match /\- DEC\(\d+\)::PKCS7\[the english patient\]\!/
-    And the output should match /\- >\n\s+DEC\(\d+\)::PKCS7\[the pink panther\]\!/
-    And the output should match /\- >\n\s+i wondered lonely\s*\n\s+as a cloud/
+    And the output should match /\- >\r?\n\s+DEC\(\d+\)::PKCS7\[the pink panther\]\!/
+    And the output should match /\- >\r?\n\s+i wondered lonely\s*\r?\n\s+as a cloud/
     And the output should match /\s+key5: DEC\(\d+\)::PKCS7\[value5\]\!/
     And the output should match /\s+key6: DEC\(\d+\)::PKCS7\[value6\]\!/
     And the output should match /multi_encryption: DEC\(\d+\)::PLAINTEXT\[jammy\]\! DEC\(\d+\)::PKCS7\[dodger\]!/
@@ -40,14 +40,14 @@ Feature: eyaml editing
 
   Scenario: decrypting a eyaml file should add a preamble
     Given I use a fixture named "sandbox"
-    And I set the environment variable "EDITOR" to "/bin/cat"
+    And I set the environment variable "EDITOR" to "cat"
     And I copy the file named "test_input.yaml" to "test_input.eyaml"
     When I run `eyaml edit test_input.eyaml`
     Then the output should match /#| This is eyaml edit mode/
 
   Scenario: decrypting a eyaml file with --no-preamble should NOT add a preamble
     Given I use a fixture named "sandbox"
-    And I set the environment variable "EDITOR" to "/bin/cat"
+    And I set the environment variable "EDITOR" to "cat"
     And I copy the file named "test_input.yaml" to "test_input.eyaml"
     When I run `eyaml edit --no-preamble test_input.eyaml`
     Then the output should not match /#| This is eyaml edit mode/
@@ -61,7 +61,7 @@ Feature: eyaml editing
 
   Scenario: editing a non-existant eyaml file should give you a blank file
     Given I use a fixture named "sandbox"
-    And I set the environment variable "EDITOR" to "/bin/cat"
+    And I set the environment variable "EDITOR" to "cat"
     And the file named "non-existant-file.eyaml" does not exist
     When I run `eyaml edit --no-preamble non-existant-file.eyaml`
     Then the output should match /^---/
