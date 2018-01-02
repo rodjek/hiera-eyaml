@@ -31,9 +31,18 @@ Feature: eyaml editing
     And the output should match /\s+key6: DEC\(\d+\)::PKCS7\[value6\]\!/
     And the output should match /multi_encryption: DEC\(\d+\)::PLAINTEXT\[jammy\]\! DEC\(\d+\)::PKCS7\[dodger\]!/
 
+  @posix
   Scenario: decrypting a eyaml file should create a temporary file
     Given I use a fixture named "sandbox"
     And I set the environment variable "EDITOR" to "/usr/bin/env true"
+    And I copy the file named "test_input.yaml" to "test_input.eyaml"
+    When I run `eyaml edit -v test_input.eyaml`
+    Then the stderr should contain "Wrote temporary file"
+
+  @windows
+  Scenario: decrypting a eyaml file should create a temporary file
+    Given I use a fixture named "sandbox"
+    And I set the environment variable "EDITOR" to "rundll32"
     And I copy the file named "test_input.yaml" to "test_input.eyaml"
     When I run `eyaml edit -v test_input.eyaml`
     Then the stderr should contain "Wrote temporary file"
