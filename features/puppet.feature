@@ -21,7 +21,7 @@ Feature: eyaml hiera integration
     And the output should contain "eyaml_puppettest.2: 'great to see you'"
     And the output should match /eyaml_puppettest.3: '\[\s+"good luck"\s+\]'/
     And the output should match /eyaml_puppettest.4: '{\s+"here": "we go again!"\s+}'/
-    And the output should contain "eyaml_puppettest.5: 'gangs of new york\nis to the warriors'"
+    And the output should match /eyaml_puppettest.5: 'gangs of new york\r?\nis to the warriors'/
 
   Scenario: verify puppet and facter for correct hash merge
     Given I use a fixture named "sandbox"
@@ -31,4 +31,4 @@ Feature: eyaml hiera integration
     And the output should contain "eyaml_puppettest.2: 'break a leg'"
     And the output should match /eyaml_puppettest.3: '\[\s+"good luck",\s+"it'll be alright on the night!"\s+\]'/
     And the output should match /eyaml_puppettest.4: '{\s+"here": "be rabbits",\s+"see": "no evil"\s+}'/
-    And the output should contain "eyaml_puppettest.5: 'source code\nis to donny darko'"
+    And the output should match /eyaml_puppettest.5: 'source code\r?\nis to donny darko'/

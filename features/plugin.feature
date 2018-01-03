@@ -7,7 +7,7 @@ Feature: eyaml plugins
   Scenario: encrypt using plaintext plugin
     Given I use a fixture named "sandbox"
     When I run `eyaml encrypt -n plaintext -o string -s hello`
-    Then the output should match /ENC\[PLAINTEXT,(.*?)\]$/
+    Then the output should match /ENC\[PLAINTEXT,(.*?)\]\r?\n/
 
   Scenario: decrypt using plaintext plugin
     Given I use a fixture named "sandbox"

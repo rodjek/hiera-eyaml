@@ -24,6 +24,9 @@ Feature: eyaml encrypting
     When I run `eyaml encrypt -o string -f test_input.bin`
     Then the output should match /ENC\[PKCS7,(.*?)\]$/
 
+  # FIXME: Something in the way Highline disables input echoing breaks Aruba's
+  # interactive command functionality on Windows.
+  @posix
   Scenario: encrypt a password
     Given I use a fixture named "sandbox"
     When I run `eyaml encrypt -o string -p` interactively
