@@ -12,17 +12,17 @@ Feature: eyaml plugins
   Scenario: decrypt using plaintext plugin
     Given I use a fixture named "sandbox"
     When I run `eyaml decrypt -n plaintext -s 'ENC[PLAINTEXT,aGVsbG8=]'`
-    Then the output should match /^hello$/
+    Then the output should match /^hello\r?\n/
 
   Scenario: decrypt using inferred plugin
     Given I use a fixture named "sandbox"
     When I run `eyaml decrypt -s 'ENC[PLAINTEXT,aGVsbG8=]'`
-    Then the output should match /^hello$/
+    Then the output should match /^hello\r?\n/
 
   Scenario: decrypt using forced plaintext plugin
     Given I use a fixture named "sandbox"
     When I run `eyaml decrypt -n plaintext -s 'ENC[aGVsbG8=]'`
-    Then the output should match /^hello$/
+    Then the output should match /^hello\r?\n/
 
   Scenario: decrypt using two plugins
     Given I use a fixture named "sandbox"
