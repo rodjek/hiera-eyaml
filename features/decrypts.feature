@@ -23,21 +23,21 @@ Feature: eyaml decrypting
     Given I use a fixture named "sandbox"
     When I run `eyaml decrypt -e test_input.yaml`
     Then the output should match /encrypted_string: DEC::PKCS7\[planet of the apes\]\!/
-    And the output should match /encrypted_block: >\n\s+DEC::PKCS7\[gangs of new york\]\!/
-    And the output should match /encrypted_tabbed_block: >\n\s+DEC::PKCS7\[gangs of new york\]\!/
+    And the output should match /encrypted_block: >\r?\n\s+DEC::PKCS7\[gangs of new york\]\!/
+    And the output should match /encrypted_tabbed_block: >\r?\n\s+DEC::PKCS7\[gangs of new york\]\!/
     And the output should match /\- DEC::PKCS7\[apocalypse now\]\!/
     And the output should match /\- DEC::PKCS7\[the count of monte cristo\]\!/
     And the output should match /\- array4/
     And the output should match /\- DEC::PKCS7\[dr strangelove\]\!/
     And the output should match /\- array5/
-    And the output should match /\- >\n\s+DEC::PKCS7\[kramer vs kramer\]\!/
-    And the output should match /\- >\n\s+DEC::PKCS7\[the manchurian candidate\]\!/
-    And the output should match /\- >\n\s+tomorrow and tomorrow and\s*\n\s+tomorrow creeps/
-    And the output should match /\- >\n\s+DEC::PKCS7\[much ado about nothing\]\!/
-    And the output should match /\- >\n\s+when shall we three meet again\n\s+in thunder/
+    And the output should match /\- >\r?\n\s+DEC::PKCS7\[kramer vs kramer\]\!/
+    And the output should match /\- >\r?\n\s+DEC::PKCS7\[the manchurian candidate\]\!/
+    And the output should match /\- >\r?\n\s+tomorrow and tomorrow and\s*\r?\n\s+tomorrow creeps/
+    And the output should match /\- >\r?\n\s+DEC::PKCS7\[much ado about nothing\]\!/
+    And the output should match /\- >\r?\n\s+when shall we three meet again\r?\n\s+in thunder/
     And the output should match /\- DEC::PKCS7\[the english patient\]\!/
-    And the output should match /\- >\n\s+DEC::PKCS7\[the pink panther\]\!/
-    And the output should match /\- >\n\s+i wondered lonely\s*\n\s+as a cloud/
+    And the output should match /\- >\r?\n\s+DEC::PKCS7\[the pink panther\]\!/
+    And the output should match /\- >\r?\n\s+i wondered lonely\s*\r?\n\s+as a cloud/
     And the output should match /\s+key5: DEC::PKCS7\[value5\]\!/
     And the output should match /\s+key6: DEC::PKCS7\[value6\]\!/
 
