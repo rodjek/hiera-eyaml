@@ -13,7 +13,7 @@ addons:
     packages:
       - expect
 script:
-  bundle exec cucumber -f progress
+  bundle exec cucumber -f progress --tags ~@windows
 notifications:
   email: false
 matrix:
